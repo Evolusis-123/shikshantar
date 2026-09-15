@@ -1,0 +1,529 @@
+================================================================================
+SHIKSHANTAR — SITE CONTENT GUIDE (for writers)
+================================================================================
+Project: orphan-charity-site-985
+Source of truth for this file: live copy in client/pages + SiteHeader/SiteFooter
++ index.html (as of document creation).
+
+HOW TO USE THIS FILE
+--------------------
+1. Edit text in the [EDIT] / SUGGESTED fields. Leave CURRENT blocks as reference
+   until the team updates the React pages.
+2. Keep each page light: one clear job per section (headline + short support line).
+   Do not pack the first viewport with stats, schedules, or secondary promos.
+3. SEO: every route needs a UNIQUE meta title and meta description.
+   Aim ~50–60 characters for titles; ~150–160 characters for descriptions.
+4. Do NOT invent legal claims, registration numbers, tax benefits, or impact
+   figures that are not already on the site or confirmed by Shikshantar.
+5. Mark anything speculative clearly as SUGGESTED. Verified site facts stay under
+   CURRENT.
+6. After editing here, hand the revised lines to a developer to update the UI
+   (or paste into the matching section in Index.tsx / About.tsx / components).
+
+KNOWN FACTS ALREADY ON THE SITE (do not contradict without approval)
+--------------------------------------------------------------------
+- Brand: Shikshantar
+- Motto / focus: Nurturing Mumbai’s migrant children into confident, employable
+  citizens through education and mentorship.
+- Centre: 107, Crystal Centre, Raheja Vihar, Chandivali / Powai, Mumbai – 400072
+  (footer also shortens to “Powai, Mumbai – 72”).
+- Email: hello@myshiksha.org
+- Phone / WhatsApp: 98207 00455 (+91 98207 00455)
+- Instagram: https://www.instagram.com/shikshantar_powai/
+- Powai learning: Mon–Fri; migrant children aged 5–15; ~80 children, ~15 mentors
+- Journey: outdoor teaching near guard office (2021) → BMC Park Powai (2022) →
+  Crystal Centre floor (2024)
+- Impact stats shown for 2025–26 (see Impact section) — treat as CURRENT site
+  copy; confirm with org before changing numbers.
+
+index.html (global fallback — SPA)
+----------------------------------
+CURRENT <title>:
+  Shikshantar — Every child, held close
+
+CURRENT <meta name="description">:
+  (none — not present in index.html)
+
+NOTE: React Router pages do not set per-route document titles yet. Until that
+is wired, the HTML title above is what search engines / tabs may see for all
+routes. Per-route SUGGESTED meta below is for when SEO tags are added.
+
+
+================================================================================
+SHARED — HEADER (SiteHeader.tsx) — appears on all main pages
+================================================================================
+
+UTILITY BAR
+-----------
+CURRENT tagline (desktop):
+  Together, we can make childhood a little brighter.
+[EDIT] SUGGESTED (optional shorter):
+  ________________________________________________
+
+CURRENT contact lines:
+  Email link text: hello@myshiksha.org
+  Phone link text: 98207 00455
+  Links: Contact → /#contact | Join → /#join
+
+PRIMARY NAV LABELS
+------------------
+CURRENT:
+  Our why      → /#about
+  What we do   → /#about-us
+  Impact       → /#impact
+  Journey      → /about
+  Join us      → /#join
+  Give hope    → /#give  (also yellow header CTA)
+
+[EDIT] Nav label revisions (keep short):
+  Our why:     _______________
+  What we do:  _______________
+  Impact:      _______________
+  Journey:     _______________
+  Join us:     _______________
+  Give hope:   _______________
+
+BRAND / ALT
+-----------
+CURRENT logo alt: Shikshantar
+[EDIT] Alt (if logo changes): _______________
+
+
+================================================================================
+SHARED — FOOTER (SiteFooter.tsx) — #contact / #join
+================================================================================
+
+BRAND BLURB
+-----------
+CURRENT:
+  Nurturing Mumbai’s migrant children into confident, employable citizens.
+  107, Crystal Centre, Raheja Vihar, Powai, Mumbai – 72.
+
+[EDIT] SUGGESTED (same facts, optional polish):
+  ________________________________________________
+  ________________________________________________
+
+CONTACT
+-------
+CURRENT:
+  hello@myshiksha.org
+  98207 00455
+  Instagram aria-label: Shikshantar on Instagram
+  WhatsApp aria-label: Message Shikshantar on WhatsApp
+
+EXPLORE COLUMN
+--------------
+CURRENT headings/links:
+  Explore
+    Our journey → /about
+    What we do  → /#about-us
+    Our impact  → /#impact
+
+JOIN IN COLUMN
+--------------
+CURRENT:
+  Join in
+    Give monthly       → /#give
+    Volunteer / mentor → WhatsApp join URL
+    Weekly broadcast   → WhatsApp join URL
+
+FOOTER JOIN / WHATSAPP (#join)
+------------------------------
+CURRENT heading: Scan to join
+CURRENT body:
+  WhatsApp us to volunteer or join the weekly parent broadcast.
+CURRENT CTA: Message +91 98207 00455
+CURRENT QR alt: QR code linking to WhatsApp +91 98207 00455
+WhatsApp prefilled message (URL):
+  Hi Shikshantar, I'd like to join the weekly broadcast / volunteer.
+
+[EDIT] Join heading: _______________
+[EDIT] Join body: _______________
+[EDIT] Join CTA: _______________
+
+FOOTER BOTTOM
+-------------
+CURRENT:
+  © 2024 Shikshantar Foundation
+  Privacy → /#contact  (placeholder link — no privacy page yet)
+  Location line: Crystal Centre · Powai · Mumbai
+
+[EDIT] Copyright year/org name if needed: _______________
+NOTE: “Privacy” currently points to #contact. Do not invent a privacy policy
+in site copy unless a real page exists.
+
+
+================================================================================
+ROUTE: /
+PAGE FILE: client/pages/Index.tsx
+================================================================================
+
+META
+----
+CURRENT title (from index.html only):
+  Shikshantar — Every child, held close
+
+[EDIT] SUGGESTED unique meta title (~50–60 chars):
+  Shikshantar | Education & mentorship for Mumbai’s migrant children
+  (count chars after edit): ____
+
+CURRENT meta description: (none)
+
+[EDIT] SUGGESTED meta description (~150–160 chars):
+  Shikshantar nurtures Mumbai’s migrant children through education and
+  mentorship at Crystal Centre, Powai. Join us — give, volunteer, or mentor.
+  (trim to ~155): ________________________________________________
+
+
+---------- SECTION: HERO ----------
+Eyebrow CURRENT:
+  A better beginning is possible
+[EDIT]: _______________
+
+H1 CURRENT:
+  Every child deserves a safe place to grow.
+[EDIT]: _______________
+
+Lede CURRENT:
+  Nurturing Mumbai’s migrant children into confident, employable citizens
+  through education and mentorship.
+[EDIT]: _______________
+
+CTAs CURRENT:
+  Primary: Help a child rise → /#give
+  Secondary: See how we help → /#about
+[EDIT] Primary CTA: _______________
+[EDIT] Secondary CTA: _______________
+
+Hero sticker CURRENT: Hope / starts here
+[EDIT]: _______________
+
+Hero stat card CURRENT: 1 in 6 / children need a stronger start
+NOTE: Treat “1 in 6” as CURRENT UI copy; confirm source before SEO use.
+[EDIT] (only if verified): _______________
+
+Image alt CURRENT:
+  Children learning together in class, hands raised
+[EDIT] Alt: _______________
+
+
+---------- SECTION: MARQUEE (decorative) ----------
+CURRENT words: care · learn · belong · thrive
+[EDIT] (optional): _______________
+
+
+---------- SECTION: SUPPORT / “THE HEART” (#about) ----------
+Eyebrow CURRENT: The heart of Shikshantar
+H2 CURRENT: Small gifts. Big beginnings.
+Body CURRENT:
+  When children have the basics — a safe home, a full belly, a chance to learn —
+  they can begin to imagine more. Your kindness makes that first step possible.
+CTA CURRENT: Make a difference → /#give
+
+Support cards CURRENT:
+  $25 — A warm welcome
+    Provides a child with a care kit and a nourishing meal.
+  $60 — A month of learning
+    Keeps one child stocked with school supplies and support.
+  $120 — A family lifted
+    Helps a caregiver access practical support for the month.
+
+NOTE: Dollar amounts are CURRENT UI; confirm currency/amounts with org before
+publishing as donation promises.
+
+[EDIT] Eyebrow: _______________
+[EDIT] H2: _______________
+[EDIT] Body: _______________
+[EDIT] Card 1 title/desc: _______________
+[EDIT] Card 2 title/desc: _______________
+[EDIT] Card 3 title/desc: _______________
+
+
+---------- SECTION: ABOUT US PANEL (#about-us) ----------
+Label CURRENT: About us
+
+H2 CURRENT (note: grammar as on site):
+  We Can Save More Lifes With Your Helping Hand.
+
+[EDIT] SUGGESTED (grammar fix — not inventing new claims):
+  We can change more lives with your helping hand.
+  OR: With your help, more children can grow safe and ready.
+  Your preference: _______________
+
+Body CURRENT:
+  Shikshantar brings people, practical care, and possibility together so
+  children can grow up feeling safe, seen, and ready for what comes next —
+  one community at a time.
+[EDIT]: _______________
+
+Feature 1 CURRENT:
+  Title: English, maths, arts & coding.
+  Desc: Mon–Fri learning at our Powai centre for migrant children aged 5–15.
+[EDIT]: _______________
+
+Feature 2 CURRENT:
+  Title: Mentors who show up.
+  Desc: Eighty children, fifteen mentors, and full-time staff working to close
+        the learning gap.
+[EDIT]: _______________
+
+CTAs CURRENT:
+  Button: About More → /#impact
+  Play control aria-label: Explore our journey → /about
+
+[EDIT] SUGGESTED button label (clearer): Learn more / See our impact
+  Your choice: _______________
+
+Image alts CURRENT:
+  Main: Children showing their artwork and tattoos
+  Inset: Mentor reading with a child
+[EDIT] Main alt: _______________
+[EDIT] Inset alt: _______________
+
+
+---------- SECTION: THE REALITY (#reality) ----------
+Eyebrow CURRENT: Why this work matters
+H2 CURRENT: The Reality
+
+Callout WEF CURRENT:
+  India has 139 million internal migrants, with one in three urban Indians
+  being a migrant.
+  (Attribution mark on UI: WEF)
+
+Callout “Our own study” CURRENT:
+  Children from migrant backgrounds are on average 3 full grades behind their
+  counterparts.
+
+Chart (RealityChart) — CURRENT labels / legend:
+  Categories: Population | Literacy | In School | Secondary Complete |
+              Higher Education | Skilled Jobs
+  Series: Slum Children / Non-Slum Children
+  Callout on chart: Just 5%
+  Aria-label: Comparison of outcomes for slum and non-slum children
+
+NOTE: Chart percentages are CURRENT site visuals. Do not rewrite numbers without
+org/data approval. Attribution “WEF” / “Our own study” should stay accurate.
+
+[EDIT] Eyebrow: _______________
+[EDIT] H2: _______________
+[EDIT] WEF callout (if rephrasing only): _______________
+[EDIT] Study callout (if rephrasing only): _______________
+
+
+---------- SECTION: IMPACT (#impact) ----------
+H2 CURRENT:
+  This is the impact You helped us achieve in 2025–26
+
+Cards CURRENT (do not invent replacements):
+  23,38,980 — children impacted overall
+
+  91% — children in our project areas, between the ages of 6–18 years, in school.
+    Note: In the 15–18 age group, our enrolment and retention rate is 14% better
+    than the all India enrolment status. GER of 69% (based on the UDISE+ 2024–25
+    report).
+
+  96% — children in our project areas, under the age of 5 years, protected from
+        undernourishment.
+    Note: Only 2% children in our project areas are underweight, as compared to
+    32% all India status as per NFHS 5.
+
+  88% — of adolescent girls, in our project areas, between 11–18 years,
+        protected from child marriage.
+
+  90% — children, in our project areas, between the ages of 6–18 years,
+        protected from child labour.
+
+CTA CURRENT: Help grow this impact → /#give
+
+Image alt CURRENT:
+  Children gathered outdoors for a learning activity
+
+[EDIT] H2 (keep year accurate): _______________
+[EDIT] CTA: _______________
+[EDIT] Alt: _______________
+[EDIT] Card wording polish ONLY (same numbers): _______________
+
+
+---------- SECTION: TEAM (#team) ----------
+Eyebrow CURRENT: About us
+H2 CURRENT: The people behind Shikshantar.
+CTA CURRENT: Explore our Journey → /about
+
+Members CURRENT:
+  Radhika Mehtani
+    An MBA with over 20 years of corporate and teaching experience, Radhika now
+    runs her own learning centre with 160+ students, alongside her contribution
+    at Shikshantar.
+    Alt: Radhika Mehtani
+
+  Indu Ahuja
+    A qualified high school teacher with over 30 years of experience. Beaming
+    with energy and a heart full of love for the underprivileged, she is also a
+    yoga practitioner.
+    Alt: Indu Ahuja
+
+  Abiali Shaikh
+    A qualified business administrator, he runs his own IT startup. He believes
+    in the importance of working with young students to bring forth long-term
+    systemic change.
+    Alt: Abiali Shaikh
+    (Image file: /abiali_sheikh.jpg)
+
+[EDIT] Section H2: _______________
+[EDIT] Bios (if needed): _______________
+
+
+---------- SECTION: QUOTE ----------
+CURRENT quote:
+  “The future changes when a child feels, perhaps for the first time, that the
+  world is on their side.”
+CURRENT attribution:
+  Maria Okafor, Shikshantar community partner
+
+NOTE: Keep attribution accurate; do not invent quotes/speakers.
+[EDIT] Quote (only if approved): _______________
+[EDIT] Attribution: _______________
+
+
+---------- SECTION: GIVE (#give) ----------
+Eyebrow CURRENT: Your kindness, in motion
+H2 CURRENT: Give a child room to rise.
+Body CURRENT:
+  Every gift helps create the safety and opportunity children need to write
+  their own next chapter.
+CTAs CURRENT:
+  Give with love (button)
+  Talk to our team → /#contact
+Stamp CURRENT: 100% heart. / 100% human.
+Image alt CURRENT: Volunteer helping children with their notebooks
+
+[EDIT] Eyebrow: _______________
+[EDIT] H2: _______________
+[EDIT] Body: _______________
+[EDIT] Primary CTA: _______________
+[EDIT] Secondary CTA: _______________
+[EDIT] Stamp: _______________
+[EDIT] Alt: _______________
+
+
+================================================================================
+ROUTE: /about
+PAGE FILE: client/pages/About.tsx
+================================================================================
+
+META
+----
+CURRENT title: (falls back to index.html)
+  Shikshantar — Every child, held close
+
+[EDIT] SUGGESTED unique meta title:
+  Our journey | Shikshantar — From pavement classroom to Crystal Centre
+  (count): ____
+
+CURRENT meta description: (none)
+
+[EDIT] SUGGESTED meta description (~150–160 chars):
+  Follow Shikshantar’s path from outdoor lessons in Powai to Crystal Centre,
+  Chandivali — and meet the people behind the classroom.
+  (trim): ________________________________________________
+
+
+---------- SECTION: ABOUT PAGE HERO ----------
+Eyebrow CURRENT: Our journey
+H1 CURRENT:
+  Built by people who believe every child deserves a chance to rise.
+Lede CURRENT:
+  From a patch of pavement beside a guard office to a full floor in Chandivali —
+  this is how Shikshantar found its home, one year at a time.
+
+[EDIT] Eyebrow: _______________
+[EDIT] H1: _______________
+[EDIT] Lede: _______________
+
+
+---------- SECTION: JOURNEY TIMELINE (#journey) ----------
+Eyebrow CURRENT: Timeline
+H2 CURRENT: How the classroom found its walls.
+
+Milestone 2021 CURRENT:
+  Title: Journey start — outside the guard office
+  Location: Near the watchman cabin
+  Story:
+    Indu Ahuja and Abiali began teaching students outdoors, beside the building
+    near the watchman guard office. With little more than dedication and open
+    space, the first classroom took shape under the sky.
+  Image alt: Journey start — outside the guard office
+
+Milestone 2022 CURRENT:
+  Title: Teaching in BMC Park, Powai
+  Location: Public park, Powai
+  Story:
+    As more students joined, they moved near BMC Park in Powai and taught in the
+    public park for about eight months. The classes went well — but the monsoon
+    season brought hard days, rain, and constant struggle to keep learning going.
+  Image alt: Teaching in BMC Park, Powai
+
+Milestone 2024 CURRENT:
+  Title: A floor of our own — Crystal Centre
+  Location: Chandivali, Mumbai
+  Story:
+    They finally rented an entire floor at 107, Crystal Centre, Raheja Vihar,
+    Chandivali, Mumbai – 400072. At last, students had a steady indoor space to
+    learn, grow, and feel at home.
+  Image alt: A floor of our own — Crystal Centre
+
+[EDIT] Intro H2: _______________
+[EDIT] 2021 title/story: _______________
+[EDIT] 2022 title/story: _______________
+[EDIT] 2024 title/story: _______________
+
+
+---------- SECTION: TEAM (about page) ----------
+Eyebrow CURRENT: Our people
+H2 CURRENT: Meet the hearts behind the work.
+(Bios same as home team section — edit once, reuse both pages.)
+
+[EDIT] H2: _______________
+
+
+---------- SECTION: ABOUT PAGE CTA ----------
+H2 CURRENT: Ready to walk this journey with us?
+Body CURRENT:
+  Volunteer, mentor, or join our weekly WhatsApp broadcast — we’d love to hear
+  from you.
+CTAs CURRENT:
+  Give with love → /#give
+  Message on WhatsApp → WhatsApp join URL
+
+[EDIT] H2: _______________
+[EDIT] Body: _______________
+[EDIT] CTAs: _______________
+
+
+================================================================================
+ROUTE: * (404 — NotFound.tsx) — optional / low priority
+================================================================================
+
+CURRENT:
+  Title on page: 404
+  Body: Oops! Page not found
+  Link: Return to Home → /
+
+[EDIT] SUGGESTED meta title: Page not found | Shikshantar
+[EDIT] Body: _______________
+
+
+================================================================================
+WRITER CHECKLIST
+================================================================================
+[ ] Unique meta title + description drafted for / and /about
+[ ] Hero stays short (brand + one headline + one lede + CTAs)
+[ ] No new legal / tax / registration claims
+[ ] Impact & reality numbers unchanged unless org confirmed
+[ ] Phone, email, Crystal Centre address still consistent
+[ ] WhatsApp / Join copy matches real volunteer + broadcast offer
+[ ] Grammar fix for “Lifes” / “About More” considered
+[ ] Alts written for key photos where CURRENT feels weak
+
+END OF CONTENT GUIDE
+================================================================================
