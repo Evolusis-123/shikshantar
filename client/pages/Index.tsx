@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
   Check,
+  ClipboardList,
+  GraduationCap,
   HandHeart,
   Heart,
-  HeartHandshake,
+  MessageCircle,
+  Music2,
   Play,
-  Shield,
   Sparkles,
-  Users,
-  Utensils,
+  Tablet,
 } from "lucide-react";
 import GlareHover from "@/components/animations/GlareHover";
 import GradientText from "@/components/animations/GradientText";
@@ -32,7 +32,7 @@ const imageUrls = {
 const aboutFeatures = [
   {
     title: "English, maths, arts & coding.",
-    description: "Mon–Fri learning at our Powai centre for migrant children aged 5–15.",
+    description: "Mon–Sat learning at our Powai centre for under-served students between the ages of 5–15.",
   },
   {
     title: "Mentors who show up.",
@@ -40,33 +40,31 @@ const aboutFeatures = [
   },
 ];
 
-const impactCards = [
+const coverageItems = [
   {
-    value: "23,38,980",
-    label: "children impacted overall",
-    icon: Users,
+    title: "Dance",
+    description: "Dedicated dance instructors.",
+    icon: Music2,
   },
   {
-    value: "91%",
-    label: "children in our project areas, between the ages of 6–18 years, in school.",
-    note: "In the 15–18 age group, our enrolment and retention rate is 14% better than the all India enrolment status. GER of 69% (based on the UDISE+ 2024–25 report).",
-    icon: BookOpen,
+    title: "Focused Grade Wise Studying",
+    description: "Grade-appropriate learning groups.",
+    icon: GraduationCap,
   },
   {
-    value: "96%",
-    label: "children in our project areas, under the age of 5 years, protected from undernourishment.",
-    note: "Only 2% children in our project areas are underweight, as compared to 32% all India status as per NFHS 5.",
-    icon: Utensils,
+    title: "Personalised Curriculum",
+    description: "No one size fits all approach.",
+    icon: ClipboardList,
   },
   {
-    value: "88%",
-    label: "of adolescent girls, in our project areas, between 11–18 years, protected from child marriage.",
-    icon: HeartHandshake,
+    title: "360 Degree Support",
+    description: "WhatsApp groups, parent involvement.",
+    icon: MessageCircle,
   },
   {
-    value: "90%",
-    label: "children, in our project areas, between the ages of 6–18 years, protected from child labour.",
-    icon: Shield,
+    title: "Technology Enabled",
+    description: "Tablets etc. are used to facilitate learning.",
+    icon: Tablet,
   },
 ];
 
@@ -85,6 +83,27 @@ const teamMembers = [
     name: "Abiali Shaikh",
     image: "/abiali_sheikh.jpg",
     bio: "A qualified business administrator, he runs his own IT startup. He believes in the importance of working with young students to bring forth long-term systemic change.",
+  },
+];
+
+const testimonials = [
+  {
+    name: "Akanksha Kakade",
+    role: "VP — Morgan Stanley",
+    quote:
+      "I can’t imagine my week without spending time with these amazing kids. It’s fulfilling to be a small part of their journey.",
+  },
+  {
+    name: "Meher Mehtani",
+    role: "BSW student, Tata Institute of Social Sciences, Mumbai",
+    quote:
+      "Being a mentor to these kids is pure joy. Seeing their smiles and enthusiasm during our sessions warms my heart. It’s a simple act that makes a big difference in their lives.",
+  },
+  {
+    name: "Diksha",
+    role: "B.Com student",
+    quote:
+      "I signed up as a mentor thinking I had something to offer. Little did I know how much these kids would teach me about resilience and positivity. It’s a two-way street of learning and growth.",
   },
 ];
 
@@ -171,7 +190,7 @@ export default function Index() {
                 </em>{" "}
                 to grow.
               </h1>
-              <p className="hero-lede">Nurturing Mumbai&apos;s migrant children into confident, employable citizens through education and mentorship.</p>
+              <p className="hero-lede">Nurturing Mumbai&apos;s under-served students into confident, employable citizens through education and mentorship.</p>
               <div className="hero-actions">
                 <div className="hero-cta-wrap">
                   <Link to="/#give" className="button button-primary">Help a child rise <ArrowUpRight size={17} /></Link>
@@ -401,7 +420,7 @@ export default function Index() {
           <div className="site-shell">
             <Reveal className="reality-heading">
               <div className="eyebrow"><span className="eyebrow-dot" /> Why this work matters</div>
-              <h2>The Reality</h2>
+              <h2>Widening Gap</h2>
             </Reveal>
 
             <div className="reality-layout">
@@ -411,9 +430,11 @@ export default function Index() {
 
               <div className="reality-callouts">
                 <Reveal className="reality-callout reality-callout-wef">
-                  <span className="reality-callout-mark" aria-hidden="true">WEF</span>
+                  <span className="reality-callout-wef-logo">
+                    <img src="/wef-logo.png" alt="World Economic Forum" />
+                  </span>
                   <p>
-                    India has <strong>139 million</strong> internal migrants, with one in three urban Indians being a migrant.
+                  Among underserved children, only <strong> 5 out of 100 </strong> reach higher education, and only <strong> 8 out of 100 </strong> land a skilled job. By adulthood, the gap has grown too wide for them to close alone.
                   </p>
                 </Reveal>
                 <Reveal className="reality-callout reality-callout-study" style={{ animationDelay: "100ms" } as React.CSSProperties}>
@@ -432,12 +453,58 @@ export default function Index() {
         </section>
 
         <section id="impact" className="section impact-section">
+          <div className="impact-deco" aria-hidden="true">
+            <span className="impact-dot impact-dot-a" />
+            <span className="impact-dot impact-dot-b" />
+            <svg className="impact-shape impact-triangle" viewBox="0 0 64 58" fill="none">
+              <path d="M6 52 L32 6 L58 52 Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />
+            </svg>
+            <svg className="impact-shape impact-star" viewBox="0 0 48 48" fill="none">
+              <path
+                d="M24 4 L28.5 17.5 L42 18 L31.5 27 L35 41 L24 33.5 L13 41 L16.5 27 L6 18 L19.5 17.5 Z"
+                fill="currentColor"
+              />
+            </svg>
+            <svg className="impact-shape impact-squiggle" viewBox="0 0 100 40" fill="none">
+              <path
+                d="M4 28 C18 8 32 8 46 22 C60 36 74 36 96 12"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+            </svg>
+            <svg className="impact-shape impact-arc" viewBox="0 0 160 60" fill="none">
+              <path
+                d="M6 52 C34 8 96 8 150 38"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeDasharray="7 8"
+                strokeLinecap="round"
+              />
+              <path d="M137 28 L152 39 L136 48" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <svg className="impact-shape impact-ring" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="26" stroke="currentColor" strokeWidth="2" strokeDasharray="4 6" />
+              <circle cx="32" cy="32" r="10" fill="currentColor" opacity=".35" />
+            </svg>
+          </div>
+
           <div className="site-shell">
             <Reveal className="impact-heading">
               <h2>
-                This is the impact <em>You</em> helped us
-                <br />
-                achieve in 2025–26
+                What all we{" "}
+                <em>
+                  cover
+                  <svg className="impact-brush" viewBox="0 0 180 18" fill="none" aria-hidden="true">
+                    <path
+                      d="M4 11 C28 4 52 14 78 8 C104 2 128 13 152 7 C160 5 170 6 176 8"
+                      stroke="currentColor"
+                      strokeWidth="7"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </em>{" "}
+                <span className="impact-heading-tail">for every child</span>
               </h2>
             </Reveal>
 
@@ -451,24 +518,25 @@ export default function Index() {
               </Reveal>
 
               <div className="impact-metrics">
-                {impactCards.map((card, index) => {
-                  const Icon = card.icon;
+                {coverageItems.map((item, index) => {
+                  const Icon = item.icon;
                   return (
                     <Reveal
-                      key={card.value}
+                      key={item.title}
                       className="impact-card"
                       style={{ animationDelay: `${index * 90}ms` } as React.CSSProperties}
                     >
-                      <span className="impact-card-icon"><Icon size={24} strokeWidth={1.7} /></span>
-                      <strong className="impact-card-value">{card.value}</strong>
-                      <p className="impact-card-label">{card.label}</p>
-                      {"note" in card && card.note ? <p className="impact-card-note">{card.note}</p> : null}
+                      <span className="impact-card-icon"><Icon size={22} strokeWidth={1.7} /></span>
+                      <div className="impact-card-body">
+                        <strong className="impact-card-value">{item.title}</strong>
+                        <p className="impact-card-label">{item.description}</p>
+                      </div>
                     </Reveal>
                   );
                 })}
                 <Reveal className="impact-cta">
                   <Link to="/#give" className="button button-primary">
-                    Help grow this impact <ArrowUpRight size={16} />
+                    Help us reach more children <ArrowUpRight size={16} />
                   </Link>
                 </Reveal>
               </div>
@@ -515,8 +583,30 @@ export default function Index() {
           </div>
         </section>
 
-        <section className="section quote-section">
-          <div className="site-shell quote-content"><span className="quote-mark">“</span><Reveal><p>“The future changes when a child feels, perhaps for the first time, that the world is on their side.”</p><div className="quote-author"><div className="author-line" /><span>Maria Okafor, Shikshantar community partner</span></div></Reveal></div>
+        <section id="testimonials" className="section testimonial-section">
+          <div className="site-shell">
+            <Reveal className="section-heading section-heading-centered testimonial-heading">
+              <div className="eyebrow eyebrow-dark"><span className="eyebrow-dot" /> In their words</div>
+              <h2>Mentor&apos;s <em> testimonials.</em></h2>
+            </Reveal>
+
+            <div className="testimonial-grid">
+              {testimonials.map((person, index) => (
+                <Reveal
+                  key={person.name}
+                  className="testimonial-card"
+                  style={{ animationDelay: `${index * 110}ms` } as React.CSSProperties}
+                >
+                  <span className="testimonial-mark" aria-hidden="true">“</span>
+                  <p>{person.quote}</p>
+                  <div className="testimonial-author">
+                    <span className="testimonial-name">{person.name}</span>
+                    <span className="testimonial-role">{person.role}</span>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section id="give" className="give-section">

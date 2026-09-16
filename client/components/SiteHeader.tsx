@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Mail, Menu, Phone, X } from "lucide-react";
+import { useJoinForm, VOLUNTEER_FORM_URL } from "@/components/JoinFormProvider";
 
 type SiteHeaderProps = {
   /** Highlight the About/journey nav item when on /about */
@@ -10,6 +11,13 @@ type SiteHeaderProps = {
 export default function SiteHeader({ activePage = "home" }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
+  const openJoinForm = useJoinForm();
+
+  const handleJoinClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    closeMenu();
+    openJoinForm();
+  };
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -36,7 +44,7 @@ export default function SiteHeader({ activePage = "home" }: SiteHeaderProps) {
     <>
       <div className="utility-bar">
         <div className="site-shell utility-inner">
-          <p className="hidden sm:block">Together, we can make childhood a little brighter.</p>
+          <p className="hidden sm:block">Together, we can all make a difference.</p>
           <div className="utility-links">
             <a
               href="mailto:hello@myshiksha.org"
@@ -52,7 +60,9 @@ export default function SiteHeader({ activePage = "home" }: SiteHeaderProps) {
             </a>
             <span className="utility-divider" />
             <Link to="/#contact">Contact</Link>
-            <Link to="/#join">Join</Link>
+            <a href={VOLUNTEER_FORM_URL} onClick={handleJoinClick}>
+              Join
+            </a>
           </div>
         </div>
       </div>
@@ -85,9 +95,9 @@ export default function SiteHeader({ activePage = "home" }: SiteHeaderProps) {
             >
               Journey
             </Link>
-            <Link to="/#join" onClick={closeMenu}>
+            <a href={VOLUNTEER_FORM_URL} onClick={handleJoinClick}>
               Join us
-            </Link>
+            </a>
             <Link to="/#give" className="nav-mobile-cta" onClick={closeMenu}>
               Give hope
             </Link>
