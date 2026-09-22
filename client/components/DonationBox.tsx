@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useId, useState } from "react";
 import { Heart, LoaderCircle, X } from "lucide-react";
-import { PAYU_1000, PAYU_500, PAYU_CUSTOM } from "@/lib/payments";
+import { PAYU_1000, PAYU_2000, PAYU_CUSTOM } from "@/lib/payments";
 import { MIN_MONTHLY_DONATION_INR } from "@shared/donations";
 
 type Mode = "onetime" | "monthly";
-type AmountChoice = 500 | 1000 | "custom";
+type AmountChoice = 1000 | 2000 | "custom";
 
 function isValidInrAmount(raw: string): boolean {
   return /^\d+(\.\d{1,2})?$/.test(raw.trim());
@@ -43,7 +43,7 @@ function startMonthlyCheckout(payload: {
 export default function DonationBox() {
   const titleId = useId();
   const [mode, setMode] = useState<Mode>("onetime");
-  const [amountChoice, setAmountChoice] = useState<AmountChoice>(500);
+  const [amountChoice, setAmountChoice] = useState<AmountChoice>(1000);
   const [customAmount, setCustomAmount] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -94,10 +94,10 @@ export default function DonationBox() {
 
     if (mode === "onetime") {
       const href =
-        amountChoice === 500
-          ? PAYU_500
-          : amountChoice === 1000
-            ? PAYU_1000
+        amountChoice === 1000
+          ? PAYU_1000
+          : amountChoice === 2000
+            ? PAYU_2000
             : PAYU_CUSTOM;
       window.open(href, "_blank", "noopener,noreferrer");
       return;
@@ -170,16 +170,6 @@ export default function DonationBox() {
         <div className="donation-amounts" role="group" aria-label="Donation amount">
           <button
             type="button"
-            className={`donation-amount-btn${amountChoice === 500 ? " is-active" : ""}`}
-            onClick={() => {
-              setAmountChoice(500);
-              setError(null);
-            }}
-          >
-            ₹500
-          </button>
-          <button
-            type="button"
             className={`donation-amount-btn${amountChoice === 1000 ? " is-active" : ""}`}
             onClick={() => {
               setAmountChoice(1000);
@@ -187,6 +177,16 @@ export default function DonationBox() {
             }}
           >
             ₹1,000
+          </button>
+          <button
+            type="button"
+            className={`donation-amount-btn${amountChoice === 2000 ? " is-active" : ""}`}
+            onClick={() => {
+              setAmountChoice(2000);
+              setError(null);
+            }}
+          >
+            ₹2,000
           </button>
           <button
             type="button"
@@ -206,7 +206,7 @@ export default function DonationBox() {
             <input
               type="text"
               inputMode="decimal"
-              placeholder={`e.g. 750 (min ${MIN_MONTHLY_DONATION_INR})`}
+              placeholder={`e.g. 1500 (min ${MIN_MONTHLY_DONATION_INR})`}
               value={customAmount}
               onChange={(e) => {
                 setCustomAmount(e.target.value);

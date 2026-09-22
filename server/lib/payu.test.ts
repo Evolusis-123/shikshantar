@@ -11,8 +11,8 @@ import {
 const schema = createMonthlyDonationSchema(15000);
 
 describe("monthly donation validation", () => {
-  it("accepts ₹500, ₹750, ₹1000", () => {
-    for (const amount of [500, 750, 1000]) {
+  it("accepts ₹1000, ₹1500, ₹2000", () => {
+    for (const amount of [1000, 1500, 2000]) {
       const result = schema.safeParse({
         amount,
         email: "a@b.com",
@@ -24,7 +24,7 @@ describe("monthly donation validation", () => {
   });
 
   it("rejects invalid amounts", () => {
-    for (const amount of [499, 0, -10, NaN, Infinity, "12.345", "abc"]) {
+    for (const amount of [999, 500, 0, -10, NaN, Infinity, "12.345", "abc"]) {
       const result = schema.safeParse({
         amount,
         email: "a@b.com",

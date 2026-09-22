@@ -3,7 +3,7 @@
  * Never put PayU secrets in this file.
  */
 
-export const MIN_MONTHLY_DONATION_INR = 500;
+export const MIN_MONTHLY_DONATION_INR = 1000;
 
 export interface MonthlyDonationRequest {
   amount: number;

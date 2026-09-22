@@ -185,7 +185,14 @@ export default function Index() {
                     <path d="M126 24 L142 34 L128 46" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <Link to="/#about" className="text-link"><span className="play-icon"><Play size={11} fill="currentColor" /></span> See how we help</Link>
+                <a
+                  href="https://www.instagram.com/shikshantar_powai/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-link"
+                >
+                  <span className="play-icon"><Play size={11} fill="currentColor" /></span> See how we help
+                </a>
               </div>
             </div>
 
@@ -195,13 +202,6 @@ export default function Index() {
                 <div className="hero-photo-overlay" />
               </div>
               <div className="hero-sticker"><Sparkles size={17} /><span>Hope<br /><strong>starts here</strong></span></div>
-              <div className="hero-stat-card">
-                <div className="hero-stat-copy">
-                  <span className="stat-number">1 in 6</span>
-                  <span className="stat-label">Children need a stronger start</span>
-                </div>
-                <ArrowRight size={18} aria-hidden="true" />
-              </div>
               <div className="hero-scribble" aria-hidden="true">
                 <svg viewBox="0 0 120 55" fill="none">
                   <path d="M4 44C31 9 64 9 113 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
