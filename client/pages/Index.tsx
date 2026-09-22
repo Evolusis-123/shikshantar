@@ -20,6 +20,7 @@ import StarBorder from "@/components/animations/StarBorder";
 import RealityChart from "@/components/RealityChart";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { PAYU_1000, PAYU_500 } from "@/lib/payments";
 
 const imageUrls = {
   hero: "/image-2.jpg",
@@ -36,7 +37,7 @@ const aboutFeatures = [
   },
   {
     title: "Mentors who show up.",
-    description: "Eighty children, fifteen mentors, and full-time staff working to close the learning gap.",
+    description: "Hundreds of children, fifteen mentors, and full-time staff working to close the learning gap.",
   },
 ];
 
@@ -77,7 +78,7 @@ const teamMembers = [
   {
     name: "Radhika Mehtani",
     image: "/radhika.jpg",
-    bio: "An MBA with over 20 years of corporate and teaching experience, Radhika now runs her own learning centre with 160+ students, alongside her contribution at Shikshantar.",
+    bio: "An MBA with over 20 years of corporate and teaching experience, Radhika now runs her own learning centre with 250+ students, alongside her contribution at Shikshantar.",
   },
   {
     name: "Abiali Shaikh",
@@ -109,22 +110,28 @@ const testimonials = [
 
 const supportCards = [
   {
-    amount: "$25",
+    amount: "₹500",
     title: "A warm welcome",
     description: "Provides a child with a care kit and a nourishing meal.",
+    href: PAYU_500,
     color: "yellow",
+    external: true,
   },
   {
-    amount: "$60",
+    amount: "₹1,000",
     title: "A month of learning",
     description: "Keeps one child stocked with school supplies and support.",
+    href: PAYU_1000,
     color: "mint",
+    external: true,
   },
   {
-    amount: "$120",
-    title: "A family lifted",
-    description: "Helps a caregiver access practical support for the month.",
+    amount: "Custom",
+    title: "Give what you can",
+    description: "Choose your own amount and support a child in your way.",
+    href: "/donate",
     color: "lavender",
+    external: false,
   },
 ];
 
@@ -193,7 +200,7 @@ export default function Index() {
               <p className="hero-lede">Nurturing Mumbai&apos;s under-served students into confident, employable citizens through education and mentorship.</p>
               <div className="hero-actions">
                 <div className="hero-cta-wrap">
-                  <Link to="/#give" className="button button-primary">Help a child rise <ArrowUpRight size={17} /></Link>
+                  <Link to="/donate" className="button button-primary">Donate Now <ArrowUpRight size={17} /></Link>
                   <svg className="hero-cta-arrow" viewBox="0 0 160 70" fill="none" aria-hidden="true">
                     <path
                       d="M8 8 C48 58 96 62 138 34"
@@ -245,16 +252,34 @@ export default function Index() {
               <div className="eyebrow eyebrow-dark"><span className="eyebrow-dot" /> The heart of Shikshantar</div>
               <h2>Small gifts.<br /><em>Big beginnings.</em></h2>
               <p>When children have the basics — a safe home, a full belly, a chance to learn — they can begin to imagine more. Your kindness makes that first step possible.</p>
-              <Link to="/#give" className="text-link text-link-dark">Make a difference <ArrowRight size={16} /></Link>
+              <Link to="/donate" className="text-link text-link-dark">Donate Now <ArrowRight size={16} /></Link>
             </Reveal>
             <div className="support-cards">
               {supportCards.map((card, index) => (
                 <Reveal key={card.amount} className="support-card-wrap" style={{ animationDelay: `${index * 120}ms` } as React.CSSProperties}>
-                  <div className={`support-card card-${card.color}`}>
-                    <div className="support-card-top"><span className="support-amount">{card.amount}</span><ArrowUpRight size={18} /></div>
-                    <div><h3>{card.title}</h3><p>{card.description}</p></div>
-                    <Link to="/#give" aria-label={`Give ${card.amount}`} className="round-arrow"><ArrowRight size={16} /></Link>
-                  </div>
+                  {card.external ? (
+                    <a
+                      href={card.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`support-card card-${card.color}`}
+                      aria-label={`Donate ${card.amount} — ${card.title}`}
+                    >
+                      <div className="support-card-top"><span className="support-amount">{card.amount}</span><ArrowUpRight size={18} /></div>
+                      <div><h3>{card.title}</h3><p>{card.description}</p></div>
+                      <span className="round-arrow" aria-hidden="true"><ArrowRight size={16} /></span>
+                    </a>
+                  ) : (
+                    <Link
+                      to={card.href}
+                      className={`support-card card-${card.color}`}
+                      aria-label={`Donate ${card.amount} — ${card.title}`}
+                    >
+                      <div className="support-card-top"><span className="support-amount">{card.amount}</span><ArrowUpRight size={18} /></div>
+                      <div><h3>{card.title}</h3><p>{card.description}</p></div>
+                      <span className="round-arrow" aria-hidden="true"><ArrowRight size={16} /></span>
+                    </Link>
+                  )}
                 </Reveal>
               ))}
             </div>
@@ -307,7 +332,7 @@ export default function Index() {
                     animationSpeed={6}
                     className="about-gradient-title"
                   >
-                    We Can Save More Lifes With Your Helping Hand.
+                    We Can Save More lives With Your Helping Hand.
                   </GradientText>
                 </h2>
                 <p>
@@ -349,7 +374,7 @@ export default function Index() {
                       transitionDuration={550}
                       className="about-btn-glare"
                     >
-                      About More
+                      More
                     </GlareHover>
                   </StarBorder>
                   <a href="/about" className="about-play-btn" aria-label="Explore our journey">
@@ -535,8 +560,8 @@ export default function Index() {
                   );
                 })}
                 <Reveal className="impact-cta">
-                  <Link to="/#give" className="button button-primary">
-                    Help us reach more children <ArrowUpRight size={16} />
+                  <Link to="/donate" className="button button-primary">
+                    Donate Now <ArrowUpRight size={16} />
                   </Link>
                 </Reveal>
               </div>
@@ -611,7 +636,7 @@ export default function Index() {
 
         <section id="give" className="give-section">
           <div className="give-orb orb-left" /><div className="give-orb orb-right" />
-          <div className="site-shell give-layout"><Reveal><div className="eyebrow eyebrow-dark"><span className="eyebrow-dot" /> Your kindness, in motion</div><h2>Give a child<br /><em>room to rise.</em></h2><p>Every gift helps create the safety and opportunity children need to write their own next chapter.</p><div className="give-actions"><button className="button button-dark"><Heart size={16} fill="currentColor" /> Give with love</button><Link to="/#contact" className="text-link text-link-dark">Talk to our team <ArrowRight size={16} /></Link></div></Reveal><Reveal className="give-image-wrap"><img src={imageUrls.classroom} alt="Volunteer helping children with their notebooks" /><div className="give-image-stamp"><HandHeart size={19} /><span>100% heart.<br /><strong>100% human.</strong></span></div></Reveal></div>
+          <div className="site-shell give-layout"><Reveal><div className="eyebrow eyebrow-dark"><span className="eyebrow-dot" /> Your kindness, in motion</div><h2>Give a child<br /><em>room to rise.</em></h2><p>Every one-time gift helps create the safety and opportunity children need to write their own next chapter.</p><div className="give-actions"><Link to="/donate" className="button button-dark"><Heart size={16} fill="currentColor" /> Donate Now</Link><Link to="/#contact" className="text-link text-link-dark">Talk to our team <ArrowRight size={16} /></Link></div></Reveal><Reveal className="give-image-wrap"><img src={imageUrls.classroom} alt="Volunteer helping children with their notebooks" /><div className="give-image-stamp"><HandHeart size={19} /><span>100% heart.<br /><strong>100% human.</strong></span></div></Reveal></div>
         </section>
       </main>
 

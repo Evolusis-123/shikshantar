@@ -10,6 +10,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import JoinFormProvider from "./components/JoinFormProvider";
 import Index from "./pages/Index";
 import About from "./pages/About";
+import Donate from "./pages/Donate";
+import DonationResult from "./pages/DonationResult";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +27,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
+            <Route path="/donate" element={<Donate />} />
+            <Route path="/donation/success" element={<DonationResult kind="success" />} />
+            <Route path="/donation/failed" element={<DonationResult kind="failed" />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

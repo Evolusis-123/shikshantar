@@ -20,7 +20,7 @@ const teamMembers = [
   {
     name: "Radhika Mehtani",
     image: "/radhika.jpg",
-    bio: "An MBA with over 20 years of corporate and teaching experience, Radhika now runs her own learning centre with 160+ students, alongside her contribution at Shikshantar.",
+    bio: "An MBA with over 20 years of corporate and teaching experience, Radhika now runs her own learning centre with 250+ students, alongside her contribution at Shikshantar.",
   },
   {
     name: "Abiali Shaikh",
@@ -35,7 +35,7 @@ const journeyMilestones = [
     title: "Journey start — outside the guard office",
     location: "Near the watchman cabin",
     story:
-      "Indu Ahuja and Abiali began teaching students outdoors, beside the building near the watchman guard office. With little more than dedication and open space, the first classroom took shape under the sky.",
+      "Indu Ahuja and Abiali began teaching students outdoors, near the watchman guard office. With little more than dedication and open space, the first classroom took shape under the sky.",
     image: "/security.jpg",
     icon: Trees,
   },
@@ -223,7 +223,7 @@ export default function About() {
               <h2>Ready to walk this journey with us?</h2>
               <p>Volunteer, mentor, or join our weekly WhatsApp broadcast — we&apos;d love to hear from you.</p>
               <div className="about-page-cta-actions">
-                <Link to="/#give" className="button button-primary">Give with love <Heart size={15} fill="currentColor" /></Link>
+                <Link to="/donate" className="button button-primary">Donate Now <Heart size={15} fill="currentColor" /></Link>
                 <a href={WHATSAPP_JOIN_URL} target="_blank" rel="noreferrer" className="text-link text-link-dark">
                   Message on WhatsApp <ArrowRight size={16} />
                 </a>
