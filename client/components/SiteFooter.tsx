@@ -83,7 +83,7 @@ export default function SiteFooter() {
           </div>
           <div>
             <span className="footer-heading">Join in</span>
-            <Link to="/donate">Donate Now</Link>
+            <Link to="/#donate">Donate Now</Link>
             <button type="button" onClick={openJoinForm}>
               Volunteer / mentor
             </button>

@@ -1,8 +1,13 @@
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 
 export type PayUConfig = {
   key: string;
-  salt: string;
+  /** Primary salt (live: only salt; test: Salt - 32 bit) */
+  saltV1: string;
+  /** Optional Salt - 256 bit (test accounts). Empty on live if not provided. */
+  saltV2: string;
+  /** True when both 32-bit and 256-bit salts are configured and differ */
+  useDualHash: boolean;
   paymentUrl: string;
   environment: "test" | "production";
   frontendUrl: string;
@@ -13,8 +18,15 @@ export type PayUConfig = {
 
 export function getPayUConfig(): PayUConfig {
   const key = process.env.PAYU_KEY?.trim();
-  const salt = process.env.PAYU_SALT?.trim();
-  if (!key || !salt) {
+  // Live PayU often has only key + salt.
+  // Test PayU may show Salt-32bit + Salt-256bit → dual JSON hash.
+  const saltV1 =
+    process.env.PAYU_SALT_V1?.trim() || process.env.PAYU_SALT?.trim() || "";
+  const saltV2Explicit = process.env.PAYU_SALT_V2?.trim() || "";
+  const saltV2 = saltV2Explicit;
+  const useDualHash = Boolean(saltV2 && saltV2 !== saltV1);
+
+  if (!key || !saltV1) {
     throw new Error("PayU is not configured");
   }
 
@@ -33,7 +45,9 @@ export function getPayUConfig(): PayUConfig {
 
   return {
     key,
-    salt,
+    saltV1,
+    saltV2: useDualHash ? saltV2 : saltV1,
+    useDualHash,
     paymentUrl: process.env.PAYU_PAYMENT_URL?.trim() || defaultPaymentUrl,
     environment,
     frontendUrl,
@@ -108,14 +122,28 @@ export function serializeSiDetails(details: SiDetails): string {
   return JSON.stringify(details);
 }
 
+function sha512Hex(value: string): string {
+  return createHash("sha512").update(value).digest("hex");
+}
+
+function safeEqualHex(a: string, b: string): boolean {
+  try {
+    const ba = Buffer.from(a.toLowerCase());
+    const bb = Buffer.from(b.toLowerCase());
+    return ba.length === bb.length && timingSafeEqual(ba, bb);
+  } catch {
+    return false;
+  }
+}
+
 /**
- * PayU Hosted Consent / Pay-and-Subscribe request hash.
- * Docs: SHA512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||si_details|SALT)
+ * Build the consent hash preimage (without salt).
+ * Docs show: key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||si_details|SALT
+ * With empty UDFs that is 11 pipes between email and si_details (10 empty segments), not 12.
  * @see https://docs.payu.in/reference/payment-consent-transaction-payu-hosted
  */
-export function generateConsentHash(params: {
+export function buildConsentHashPreimage(params: {
   key: string;
-  salt: string;
   txnid: string;
   amount: string;
   productinfo: string;
@@ -128,7 +156,7 @@ export function generateConsentHash(params: {
   udf5?: string;
   siDetailsJson: string;
 }): string {
-  const sequence = [
+  return [
     params.key,
     params.txnid,
     params.amount,
@@ -145,12 +173,46 @@ export function generateConsentHash(params: {
     "",
     "",
     "",
-    "",
     params.siDetailsJson,
-    params.salt,
   ].join("|");
+}
 
-  return createHash("sha512").update(sequence).digest("hex");
+/**
+ * PayU Hosted Consent / Pay-and-Subscribe request hash.
+ *
+ * - Live (single salt): plain sha512 hex
+ * - Test with Salt-32bit + Salt-256bit: {"v1":"...","v2":"..."}
+ */
+export function generateConsentHash(params: {
+  key: string;
+  saltV1: string;
+  saltV2?: string;
+  useDualHash?: boolean;
+  txnid: string;
+  amount: string;
+  productinfo: string;
+  firstname: string;
+  email: string;
+  udf1?: string;
+  udf2?: string;
+  udf3?: string;
+  udf4?: string;
+  udf5?: string;
+  siDetailsJson: string;
+}): string {
+  const preimage = buildConsentHashPreimage(params);
+  const primary = sha512Hex(`${preimage}|${params.saltV1}`);
+
+  const dual =
+    params.useDualHash === true ||
+    (Boolean(params.saltV2) && params.saltV2 !== params.saltV1);
+
+  if (!dual || !params.saltV2) {
+    return primary;
+  }
+
+  const v2 = sha512Hex(`${preimage}|${params.saltV2}`);
+  return JSON.stringify({ v1: primary, v2 });
 }
 
 /**
@@ -193,34 +255,59 @@ export function generateReverseHash(params: {
     params.key,
   ].join("|");
 
-  return createHash("sha512").update(sequence).digest("hex");
+  return sha512Hex(sequence);
+}
+
+function extractHashCandidates(received: string): string[] {
+  const trimmed = received.trim();
+  if (!trimmed) return [];
+
+  if (trimmed.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(trimmed) as { v1?: string; v2?: string };
+      return [parsed.v1, parsed.v2].filter(Boolean) as string[];
+    } catch {
+      return [trimmed];
+    }
+  }
+
+  return [trimmed];
 }
 
 export function verifyReverseHash(
   body: Record<string, unknown>,
-  salt: string,
+  salts: string | string[],
   key: string,
 ): boolean {
   const received = String(body.hash ?? "");
-  if (!received) return false;
+  const candidates = extractHashCandidates(received);
+  if (!candidates.length) return false;
 
-  const expected = generateReverseHash({
-    salt,
-    key,
-    status: String(body.status ?? ""),
-    email: String(body.email ?? ""),
-    firstname: String(body.firstname ?? ""),
-    productinfo: String(body.productinfo ?? ""),
-    amount: String(body.amount ?? ""),
-    txnid: String(body.txnid ?? ""),
-    udf1: String(body.udf1 ?? ""),
-    udf2: String(body.udf2 ?? ""),
-    udf3: String(body.udf3 ?? ""),
-    udf4: String(body.udf4 ?? ""),
-    udf5: String(body.udf5 ?? ""),
-  });
+  const saltList = (Array.isArray(salts) ? salts : [salts]).filter(Boolean);
 
-  return expected.toLowerCase() === received.toLowerCase();
+  for (const salt of saltList) {
+    const expected = generateReverseHash({
+      salt,
+      key,
+      status: String(body.status ?? ""),
+      email: String(body.email ?? ""),
+      firstname: String(body.firstname ?? ""),
+      productinfo: String(body.productinfo ?? ""),
+      amount: String(body.amount ?? ""),
+      txnid: String(body.txnid ?? ""),
+      udf1: String(body.udf1 ?? ""),
+      udf2: String(body.udf2 ?? ""),
+      udf3: String(body.udf3 ?? ""),
+      udf4: String(body.udf4 ?? ""),
+      udf5: String(body.udf5 ?? ""),
+    });
+
+    if (candidates.some((c) => safeEqualHex(c, expected))) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /** Safe fields to log — never salt, secrets, card, CVV. */

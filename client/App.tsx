@@ -5,12 +5,11 @@ import { createRoot } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import JoinFormProvider from "./components/JoinFormProvider";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import Donate from "./pages/Donate";
 import DonationResult from "./pages/DonationResult";
 import NotFound from "./pages/NotFound";
 
@@ -27,7 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
-            <Route path="/donate" element={<Donate />} />
+            <Route path="/donate" element={<Navigate to="/#donate" replace />} />
             <Route path="/donation/success" element={<DonationResult kind="success" />} />
             <Route path="/donation/failed" element={<DonationResult kind="failed" />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

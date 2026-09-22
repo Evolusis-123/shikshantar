@@ -98,13 +98,13 @@ export default function SiteHeader({ activePage = "home" }: SiteHeaderProps) {
             <a href={VOLUNTEER_FORM_URL} onClick={handleJoinClick}>
               Join us
             </a>
-            <Link to="/donate" className="nav-mobile-cta" onClick={closeMenu}>
+            <Link to="/#donate" className="nav-mobile-cta" onClick={closeMenu}>
               Donate Now
             </Link>
           </nav>
 
           <div className="header-actions">
-            <Link to="/donate" className="button button-small button-yellow">
+            <Link to="/#donate" className="button button-small button-yellow">
               <Heart size={15} fill="currentColor" /> Donate Now
             </Link>
             <button

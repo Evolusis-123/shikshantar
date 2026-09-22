@@ -47,7 +47,7 @@ export const handlePayUSuccess: RequestHandler = (req, res) => {
     });
   }
 
-  const valid = verifyReverseHash(payload, config.salt, config.key);
+  const valid = verifyReverseHash(payload, [config.saltV1, config.saltV2], config.key);
   const log = sanitizePayULog(payload);
 
   if (!valid) {
@@ -96,7 +96,7 @@ export const handlePayUFailure: RequestHandler = (req, res) => {
     return redirectToFrontend(res, "/donation/failed", { reason: "config" });
   }
 
-  const valid = verifyReverseHash(payload, config.salt, config.key);
+  const valid = verifyReverseHash(payload, [config.saltV1, config.saltV2], config.key);
   const log = sanitizePayULog(payload);
 
   if (!valid) {
@@ -126,7 +126,7 @@ export const handlePayUWebhook: RequestHandler = (req, res) => {
 
   const hasHash = Boolean(payload.hash);
   const valid = hasHash
-    ? verifyReverseHash(payload, config.salt, config.key)
+    ? verifyReverseHash(payload, [config.saltV1, config.saltV2], config.key)
     : false;
 
   const log = sanitizePayULog(payload);

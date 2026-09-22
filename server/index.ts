@@ -2,7 +2,10 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { handleMonthlyDonation } from "./routes/donations-monthly";
+import {
+  handleMonthlyDonation,
+  handleMonthlyDonationRedirect,
+} from "./routes/donations-monthly";
 import {
   handlePayUFailure,
   handlePayUSuccess,
@@ -34,6 +37,11 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   app.post("/api/donations/monthly", donationLimiter, handleMonthlyDonation);
+  app.post(
+    "/api/donations/monthly/redirect",
+    donationLimiter,
+    handleMonthlyDonationRedirect,
+  );
 
   app.post("/api/payu/success", handlePayUSuccess);
   app.get("/api/payu/success", handlePayUSuccess);

@@ -57,7 +57,7 @@ export default function DonationResult({ kind }: { kind: ResultKind }) {
                   Back home <ArrowRight size={16} />
                 </Link>
               ) : (
-                <Link to="/donate" className="button button-primary">
+                <Link to="/#donate" className="button button-primary">
                   Try again <ArrowRight size={16} />
                 </Link>
               )}

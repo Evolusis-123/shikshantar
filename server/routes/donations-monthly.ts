@@ -10,17 +10,35 @@ import {
   serializeSiDetails,
 } from "../lib/payu";
 
-export const handleMonthlyDonation: RequestHandler = (req, res) => {
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function createCheckoutPayload(body: unknown): {
+  error?: { status: number; body: { error: string; code: string } };
+  checkout?: MonthlyDonationCheckoutResponse;
+  sameSalt?: boolean;
+} {
   try {
     const config = getPayUConfig();
     const parsed = createMonthlyDonationSchema(config.maxMonthlyAmount).safeParse(
-      req.body,
+      body,
     );
 
     if (!parsed.success) {
-      const message =
-        parsed.error.issues[0]?.message || "Invalid donation request";
-      return res.status(400).json({ error: message, code: "VALIDATION_ERROR" });
+      return {
+        error: {
+          status: 400,
+          body: {
+            error: parsed.error.issues[0]?.message || "Invalid donation request",
+            code: "VALIDATION_ERROR",
+          },
+        },
+      };
     }
 
     const { amount, name, email, phone } = parsed.data;
@@ -35,7 +53,9 @@ export const handleMonthlyDonation: RequestHandler = (req, res) => {
 
     const hash = generateConsentHash({
       key: config.key,
-      salt: config.salt,
+      saltV1: config.saltV1,
+      saltV2: config.saltV2,
+      useDualHash: config.useDualHash,
       txnid,
       amount: amountFormatted,
       productinfo,
@@ -44,7 +64,7 @@ export const handleMonthlyDonation: RequestHandler = (req, res) => {
       siDetailsJson,
     });
 
-    const response: MonthlyDonationCheckoutResponse = {
+    const checkout: MonthlyDonationCheckoutResponse = {
       paymentUrl: config.paymentUrl,
       fields: {
         key: config.key,
@@ -63,22 +83,100 @@ export const handleMonthlyDonation: RequestHandler = (req, res) => {
       },
     };
 
-    console.info("[donations/monthly] checkout initiated", {
-      txnid,
-      amount: amountFormatted,
-      environment: config.environment,
-      timestamp: new Date().toISOString(),
-    });
-
-    return res.status(200).json(response);
+    return {
+      checkout,
+      sameSalt: !config.useDualHash,
+    };
   } catch (error) {
-    const message =
-      error instanceof Error && error.message === "PayU is not configured"
-        ? "Donation payments are temporarily unavailable"
-        : "Unable to start donation checkout";
-    console.error("[donations/monthly] failed", {
-      message: error instanceof Error ? error.message : "unknown",
-    });
-    return res.status(503).json({ error: message, code: "CHECKOUT_ERROR" });
+    const unavailable =
+      error instanceof Error && error.message === "PayU is not configured";
+    return {
+      error: {
+        status: 503,
+        body: {
+          error: unavailable
+            ? "Donation payments are temporarily unavailable"
+            : "Unable to start donation checkout",
+          code: "CHECKOUT_ERROR",
+        },
+      },
+    };
   }
+}
+
+function payuAutoSubmitHtml(checkout: MonthlyDonationCheckoutResponse): string {
+  const inputs = Object.entries(checkout.fields)
+    .map(
+      ([name, value]) =>
+        `<input type="hidden" name="${escapeHtml(name)}" value="${escapeHtml(value)}" />`,
+    )
+    .join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redirecting to PayU…</title>
+</head>
+<body>
+  <p>Redirecting securely to PayU…</p>
+  <form id="payu" method="post" action="${escapeHtml(checkout.paymentUrl)}">
+    ${inputs}
+  </form>
+  <script>document.getElementById("payu").submit();</script>
+</body>
+</html>`;
+}
+
+export const handleMonthlyDonation: RequestHandler = (req, res) => {
+  const result = createCheckoutPayload(req.body);
+  if (result.error) {
+    return res.status(result.error.status).json(result.error.body);
+  }
+
+  if (result.sameSalt) {
+    console.info(
+      "[donations/monthly] single-salt hash mode (live-style key+salt). Set PAYU_SALT_V2 only for test accounts that show Salt-256 bit.",
+    );
+  }
+
+  console.info("[donations/monthly] checkout initiated", {
+    txnid: result.checkout!.fields.txnid,
+    amount: result.checkout!.fields.amount,
+    dualSalt: !result.sameSalt,
+    timestamp: new Date().toISOString(),
+  });
+
+  return res.status(200).json(result.checkout);
+};
+
+/**
+ * Server-rendered auto-submit form to PayU.
+ * Prefer this over client-built forms so JSON hash/si_details are HTML-escaped correctly.
+ */
+export const handleMonthlyDonationRedirect: RequestHandler = (req, res) => {
+  const result = createCheckoutPayload(req.body);
+  if (result.error) {
+    return res.status(result.error.status).json(result.error.body);
+  }
+
+  if (result.sameSalt) {
+    console.info(
+      "[donations/monthly/redirect] single-salt hash mode (live-style key+salt).",
+    );
+  }
+
+  console.info("[donations/monthly/redirect] checkout initiated", {
+    txnid: result.checkout!.fields.txnid,
+    amount: result.checkout!.fields.amount,
+    dualSalt: !result.sameSalt,
+    surl: result.checkout!.fields.surl,
+    timestamp: new Date().toISOString(),
+  });
+
+  res
+    .status(200)
+    .setHeader("Content-Type", "text/html; charset=utf-8")
+    .send(payuAutoSubmitHtml(result.checkout!));
 };

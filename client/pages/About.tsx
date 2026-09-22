@@ -223,7 +223,7 @@ export default function About() {
               <h2>Ready to walk this journey with us?</h2>
               <p>Volunteer, mentor, or join our weekly WhatsApp broadcast — we&apos;d love to hear from you.</p>
               <div className="about-page-cta-actions">
-                <Link to="/donate" className="button button-primary">Donate Now <Heart size={15} fill="currentColor" /></Link>
+                <Link to="/#donate" className="button button-primary">Donate Now <Heart size={15} fill="currentColor" /></Link>
                 <a href={WHATSAPP_JOIN_URL} target="_blank" rel="noreferrer" className="text-link text-link-dark">
                   Message on WhatsApp <ArrowRight size={16} />
                 </a>
